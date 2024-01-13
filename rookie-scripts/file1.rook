@@ -1,0 +1,7 @@
+define main():
+    arrays = [["string1", "string2"], ["string3", "string4"]]
+    for array in arrays:
+        for index, value in array:
+            print(index, value)
+
+print("End of file")

@@ -1,0 +1,10 @@
+states:
+q0 = initial state, whitespace
+q1 = alphabet
+q2 = underscore(_)
+q3 = number
+q4 = decimal(.)
+q5 = single oeparator(=, >, <, +, -, *, /)
+q6 = double oeparator(==, >=, <=, +=, -=, *=, /=, !=)
+q7 = exclamation(!)
+q8 = string

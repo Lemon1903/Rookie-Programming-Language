@@ -1,0 +1,58 @@
++-------------------+---------------+
+|       TOKEN       |     LEXEME    |
++-------------------+---------------+
+|      KEYWORD      |     define    |
+|     IDENTIFIER    |      main     |
+|       LPAREN      |       (       |
+|       RPAREN      |       )       |
+|       COLON       |       :       |
+|      NEWLINE      |               |
+|       INDENT      |               |
+|     IDENTIFIER    |     arrays    |
+|       ASSIGN      |       =       |
+|      LBRACKET     |       [       |
+|      LBRACKET     |       [       |
+|       STRING      |   "string1"   |
+|       COMMA       |       ,       |
+|       STRING      |   "string2"   |
+|      RBRACKET     |       ]       |
+|       COMMA       |       ,       |
+|      LBRACKET     |       [       |
+|       STRING      |   "string3"   |
+|       COMMA       |       ,       |
+|       STRING      |   "string4"   |
+|      RBRACKET     |       ]       |
+|      RBRACKET     |       ]       |
+|      NEWLINE      |               |
+|      KEYWORD      |      for      |
+|     IDENTIFIER    |     array     |
+|      KEYWORD      |       in      |
+|     IDENTIFIER    |     arrays    |
+|       COLON       |       :       |
+|      NEWLINE      |               |
+|       INDENT      |               |
+|      KEYWORD      |      for      |
+|     IDENTIFIER    |     index     |
+|       COMMA       |       ,       |
+|     IDENTIFIER    |     value     |
+|      KEYWORD      |       in      |
+|     IDENTIFIER    |     array     |
+|       COLON       |       :       |
+|      NEWLINE      |               |
+|       INDENT      |               |
+| BUILT_IN_FUNCTION |     print     |
+|       LPAREN      |       (       |
+|     IDENTIFIER    |     index     |
+|       COMMA       |       ,       |
+|     IDENTIFIER    |     value     |
+|       RPAREN      |       )       |
+|      NEWLINE      |               |
+|       DEDENT      |               |
+|       DEDENT      |               |
+|       DEDENT      |               |
+| BUILT_IN_FUNCTION |     print     |
+|       LPAREN      |       (       |
+|       STRING      | "End of file" |
+|       RPAREN      |       )       |
+|        EOF        |               |
++-------------------+---------------+
