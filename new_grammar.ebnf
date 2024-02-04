@@ -1,0 +1,60 @@
+rook_pl ::= statement+
+statement ::= (simple_stmt | compound_stmt) NEWLINE
+
+simple_stmt ::= dec_state | ass_state | in_state | out_state 
+compound_stmt ::= cond_state | iter_state | func_state
+
+identifier ::= alpha alphanumeric* (('_' | alphanumeric)* alphanumeric)?
+all_char ::= alphanumeric | symbols
+string ::= '"' all_char* '"'
+alphanumeric ::= alpha | digit
+number ::= int ('.' digit+)?
+int ::= '0' | non_zero digit*
+array ::= '[' array_value? ']'
+array_value ::= value_list | int 'to' int ('step' ':' int )?
+
+value ::= identifier | number | string | bool_literals | array | '(' expr ')'
+expr ::= value (arith_op value)*
+
+iden_list ::= identifier (',' identifier)*
+value_list ::= value (',' value)*
+dec_state ::= iden_list '=' value_list
+ass_state ::= identifier ass_op value
+
+in_state ::= identifier '=' 'input' '(' string? ')'
+out_state ::= 'print' '(' value_list? (',' out_arg)? ')'
+out_arg ::= 'separator' '=' (' ' | symbols)
+
+cond_state ::= if_st (elif_st)* (else_st)? | which_st
+if_st ::= 'if' condition ':' block
+elif_st ::= 'elif' condition ':' block
+else_st ::= 'else' ':' block
+which_st ::= 'which' identifier ':' ins_block
+condition ::= value (rel_op value)?
+ins_block ::= NEWLINE INDENT ins_part+ DEDENT
+ins_part ::= 'instance' [rel_op] value ':' block
+block ::= NEWLINE INDENT statement+ DEDENT
+
+iter_state ::= while_loop | for_loop
+while_loop ::= 'while' condition ':' block
+for_loop ::= 'for' var (',' var)? 'in' array ':' block
+
+func_state ::= 'define' identifier '(' params? ')' ':' block
+params ::= param (',' param)*
+param ::= identifier ('=' value)?
+
+
+@terminals
+NEWLINE ::= '\n'
+INDENT ::= "indent"
+DEDENT ::= "dedent"
+alpha ::= 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+bool_literals ::= 'true' | 'false'
+logic_op ::= 'and' | 'or' | 'not'
+unary ::= '+' | '-'
+arith_op ::= '+' | '-' | '*' | '/' | '%'
+ass_op ::= '=' | '+=' | '-=' | '*=' | '/='
+rel_op ::= '<' | '>' | '==' | '!=' | '>=' | '<='
+symbols ::= '_' |'+' | '-' | '*' | '/' | '%' | '=' | '<' | '>' | '[' | ']' | '.' | '{' | '}' | '(' | ')' | '&' | '^' | '#' | '@' | '!' | '`' | '~' | '|' | "'" | '\' | ':' | ';' | ',' | ' '
+non_zero ::= '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+digit ::= '0' | non_zero

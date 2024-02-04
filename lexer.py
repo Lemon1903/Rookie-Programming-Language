@@ -110,6 +110,9 @@ class Lexer:
                     raise Exception(f"Invalid lexeme: {self._lexeme + current_char}")
             # number
             elif self._current_state == 3:
+                if current_char in constants.ALPHABET:
+                    raise Exception(f"Invalid lexeme: {self._lexeme + current_char}")
+
                 if current_char in constants.DIGITS:
                     self.update_lexeme(current_char)
                 elif current_char == ".":
@@ -129,7 +132,8 @@ class Lexer:
                     self._current_state = 6
                     self.update_lexeme(current_char)
                 else:
-                    if self._current_state == 7:  # not equal (!=)
+                    # invalid double operators (-+, ++, =+, --) and not equal (!=)
+                    if current_char in constants.OPERATORS or self._current_state == 7:
                         raise Exception(f"Invalid lexeme: {self._lexeme + current_char}")
                     self.add_token()
             # double operators (+= -= *= /= >= <= ==)
@@ -143,8 +147,11 @@ class Lexer:
                 self.update_lexeme(current_char)
                 if current_char == '"':  # closing quote
                     self.add_token()
-                elif current_char == "":  # reached end of line or file
-                    raise Exception(f"String was not closed: {self._lexeme}")
+
+        # checks if string is closed
+        if self._current_state == 8:
+            raise Exception(f"String was not closed: {self._lexeme}")
+
         self.add_token()
 
     def update_lexeme(self, current_char):
