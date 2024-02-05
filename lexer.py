@@ -1,9 +1,11 @@
+import copy
 import os
 import re
 
 from prettytable import PrettyTable
 
 import constants
+from token_stream import TokenStream
 
 
 class Lexer:
@@ -11,7 +13,7 @@ class Lexer:
         self._filename = os.path.basename(filepath).split(".")[0]
         self._cursor = 0
         self._lexeme = ""
-        self._tokens = []
+        self._tokens = TokenStream()
         self._current_state = 0
         self._current_indentation = 0
 
@@ -39,12 +41,12 @@ class Lexer:
         # compare indentation with the previous line
         indentation = self.analyze_indentation(line)
         if indentation > self._current_indentation:
-            self._tokens.append(("INDENT", ""))
+            self._tokens.add(("INDENT", ""))
             self._current_indentation = indentation
         elif indentation < self._current_indentation:
             # Generate DEDENT tokens for each level decreased
             while indentation < self._current_indentation:
-                self._tokens.append(("DEDENT", ""))
+                self._tokens.add(("DEDENT", ""))
                 self._current_indentation -= constants.INDENT_SIZE
 
         self.generate_tokens(line)
@@ -159,7 +161,7 @@ class Lexer:
         self._lexeme += current_char
 
     def add_token(self):
-        self._tokens.append(self.classify_token())
+        self._tokens.add(self.classify_token())
         self._lexeme = ""
         self._current_state = 0
 
@@ -195,3 +197,6 @@ class Lexer:
         output_path = os.path.join("rookie-tables", f"{self._filename}.rtable")
         with open(output_path, "w") as file:
             file.write(tokens_table.get_string())
+
+    def get_tokens(self):
+        return copy.deepcopy(self._tokens)

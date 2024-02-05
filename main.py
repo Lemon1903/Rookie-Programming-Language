@@ -2,6 +2,7 @@ import os
 import sys
 
 from lexer import Lexer
+from syntax import Parser
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -17,3 +18,6 @@ if __name__ == "__main__":
     lexer = Lexer(filepath)
     lexer.start_parse()
     lexer.output_table()
+
+    parser = Parser(lexer.get_tokens())
+    parser.parse()
