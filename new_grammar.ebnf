@@ -11,37 +11,42 @@ alphanumeric ::= alpha | digit
 number ::= int ('.' digit+)?
 int ::= '0' | non_zero digit*
 array ::= '[' array_value? ']'
-array_value ::= value_list | int 'to' int ('step' ':' int )?
+array_value ::= expr_list | int 'to' int ('step' ':' int )?
 
-value ::= identifier | number | string | bool_literals | array | '(' expr ')'
-expr ::= value (arith_op value)*
+expression ::= and_test ('or' and_test)*
+and_test ::= not_test ('and' not_test)*
+not_test ::= 'not' not_test | comparison
+comparison ::= expr ((rel_op | 'not' 'in' | 'in') expr)*
+expr ::= factor (('+' | '-') factor)*
+factor ::= term (('*' | '/' | '%') term)*
+term ::= ('+' | '-') value
+value ::= identifier | number | string | bool_literals | array | '(' expression ')'
 
 iden_list ::= identifier (',' identifier)*
-value_list ::= value (',' value)*
-dec_state ::= iden_list '=' value_list
-ass_state ::= identifier ass_op value
+expr_list ::= expression (',' expression)*
+dec_state ::= iden_list '=' expr_list
+ass_state ::= identifier ass_op expression
 
 in_state ::= identifier '=' 'input' '(' string? ')'
-out_state ::= 'print' '(' value_list? (',' out_arg)? ')'
+out_state ::= 'print' '(' expr_list? (',' out_arg)? ')'
 out_arg ::= 'separator' '=' (' ' | symbols)
 
 cond_state ::= if_st (elif_st)* (else_st)? | which_st
-if_st ::= 'if' condition ':' block
-elif_st ::= 'elif' condition ':' block
+if_st ::= 'if' expression ':' block
+elif_st ::= 'elif' expression ':' block
 else_st ::= 'else' ':' block
 which_st ::= 'which' identifier ':' ins_block
-condition ::= value (rel_op value)?
-ins_block ::= NEWLINE INDENT ins_part+ DEDENT
-ins_part ::= 'instance' [rel_op] value ':' block
 block ::= NEWLINE INDENT statement+ DEDENT
+ins_block ::= NEWLINE INDENT ins_part+ DEDENT
+ins_part ::= 'instance' [rel_op] (number | string) ':' block
 
 iter_state ::= while_loop | for_loop
-while_loop ::= 'while' condition ':' block
+while_loop ::= 'while' expression ':' block
 for_loop ::= 'for' var (',' var)? 'in' array ':' block
 
 func_state ::= 'define' identifier '(' params? ')' ':' block
 params ::= param (',' param)*
-param ::= identifier ('=' value)?
+param ::= identifier ('=' expression)?
 
 
 @terminals

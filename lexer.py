@@ -190,7 +190,7 @@ class Lexer:
     def output_table(self):
         # print tokens to console
         tokens_table = PrettyTable(["TOKEN", "LEXEME"])
-        tokens_table.add_rows(self._tokens)
+        tokens_table.add_rows(self._tokens.get_tokens())
         print(tokens_table)
 
         # write tokens to file
