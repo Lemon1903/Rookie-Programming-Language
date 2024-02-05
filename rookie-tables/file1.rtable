@@ -1,58 +1,194 @@
-+-------------------+---------------+
-|       TOKEN       |     LEXEME    |
-+-------------------+---------------+
-|      KEYWORD      |     define    |
-|     IDENTIFIER    |      main     |
-|       LPAREN      |       (       |
-|       RPAREN      |       )       |
-|       COLON       |       :       |
-|      NEWLINE      |               |
-|       INDENT      |               |
-|     IDENTIFIER    |     arrays    |
-|       ASSIGN      |       =       |
-|      LBRACKET     |       [       |
-|      LBRACKET     |       [       |
-|       STRING      |   "string1"   |
-|       COMMA       |       ,       |
-|       STRING      |   "string2"   |
-|      RBRACKET     |       ]       |
-|       COMMA       |       ,       |
-|      LBRACKET     |       [       |
-|       STRING      |   "string3"   |
-|       COMMA       |       ,       |
-|       STRING      |   "string4"   |
-|      RBRACKET     |       ]       |
-|      RBRACKET     |       ]       |
-|      NEWLINE      |               |
-|      KEYWORD      |      for      |
-|     IDENTIFIER    |     array     |
-|      KEYWORD      |       in      |
-|     IDENTIFIER    |     arrays    |
-|       COLON       |       :       |
-|      NEWLINE      |               |
-|       INDENT      |               |
-|      KEYWORD      |      for      |
-|     IDENTIFIER    |     index     |
-|       COMMA       |       ,       |
-|     IDENTIFIER    |     value     |
-|      KEYWORD      |       in      |
-|     IDENTIFIER    |     array     |
-|       COLON       |       :       |
-|      NEWLINE      |               |
-|       INDENT      |               |
-| BUILT_IN_FUNCTION |     print     |
-|       LPAREN      |       (       |
-|     IDENTIFIER    |     index     |
-|       COMMA       |       ,       |
-|     IDENTIFIER    |     value     |
-|       RPAREN      |       )       |
-|      NEWLINE      |               |
-|       DEDENT      |               |
-|       DEDENT      |               |
-|       DEDENT      |               |
-| BUILT_IN_FUNCTION |     print     |
-|       LPAREN      |       (       |
-|       STRING      | "End of file" |
-|       RPAREN      |       )       |
-|        EOF        |               |
-+-------------------+---------------+
++-------------------+---------------------+
+|       TOKEN       |        LEXEME       |
++-------------------+---------------------+
+|      KEYWORD      |        define       |
+|     IDENTIFIER    |         main        |
+|       LPAREN      |          (          |
+|       RPAREN      |          )          |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+|     IDENTIFIER    |        arrays       |
+|       ASSIGN      |          =          |
+|      LBRACKET     |          [          |
+|      LBRACKET     |          [          |
+|       STRING      |      "string1"      |
+|       COMMA       |          ,          |
+|       STRING      |      "string2"      |
+|      RBRACKET     |          ]          |
+|       COMMA       |          ,          |
+|      LBRACKET     |          [          |
+|       STRING      |      "string3"      |
+|       COMMA       |          ,          |
+|       STRING      |      "string4"      |
+|      RBRACKET     |          ]          |
+|      RBRACKET     |          ]          |
+|      NEWLINE      |                     |
+|      KEYWORD      |         for         |
+|     IDENTIFIER    |        array        |
+|      KEYWORD      |          in         |
+|     IDENTIFIER    |        arrays       |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+|      KEYWORD      |         for         |
+|     IDENTIFIER    |        index        |
+|       COMMA       |          ,          |
+|     IDENTIFIER    |        value        |
+|      KEYWORD      |          in         |
+|     IDENTIFIER    |        array        |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|     IDENTIFIER    |        index        |
+|       COMMA       |          ,          |
+|     IDENTIFIER    |        value        |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|       DEDENT      |                     |
+|      KEYWORD      |        while        |
+|       NUMBER      |          5          |
+|        PLUS       |          +          |
+|       NUMBER      |          5          |
+|        LESS       |          <          |
+|       NUMBER      |          6          |
+|      MULTIPLY     |          *          |
+|       LPAREN      |          (          |
+|       NUMBER      |          7          |
+|       MINUS       |          -          |
+|       NUMBER      |          7          |
+|       RPAREN      |          )          |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|       STRING      | "inside while loop" |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|     IDENTIFIER    |         var         |
+|       ASSIGN      |          =          |
+|       NUMBER      |          5          |
+|      NEWLINE      |                     |
+|      KEYWORD      |        which        |
+|     IDENTIFIER    |         var         |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+|      KEYWORD      |       instance      |
+|        LESS       |          <          |
+|       NUMBER      |          5          |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|       STRING      |    "less than 5"    |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|      KEYWORD      |       instance      |
+|       NUMBER      |          5          |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|       STRING      |        "is 5"       |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|      KEYWORD      |       instance      |
+|      GREATER      |          >          |
+|       NUMBER      |          5          |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|       STRING      |   "greater than 5"  |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|      KEYWORD      |       default       |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|       STRING      | "none of the above" |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|       DEDENT      |                     |
+|     IDENTIFIER    |         var         |
+|     PLUSASSIGN    |          +=         |
+|       NUMBER      |          5          |
+|      NEWLINE      |                     |
+|     IDENTIFIER    |         name        |
+|       ASSIGN      |          =          |
+| BUILT_IN_FUNCTION |        input        |
+|       LPAREN      |          (          |
+|       STRING      | "what's your name?" |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|     IDENTIFIER    |         age         |
+|       ASSIGN      |          =          |
+| BUILT_IN_FUNCTION |        input        |
+|       LPAREN      |          (          |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|     IDENTIFIER    |        string       |
+|       ASSIGN      |          =          |
+|       STRING      |   "just a string"   |
+|      NEWLINE      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|     IDENTIFIER    |         var         |
+|       COMMA       |          ,          |
+|     IDENTIFIER    |         age         |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|      KEYWORD      |          if         |
+|     IDENTIFIER    |         age         |
+|        LESS       |          <          |
+|       NUMBER      |          6          |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|       STRING      |     "too young"     |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|      KEYWORD      |         elif        |
+|     IDENTIFIER    |         age         |
+|      GREATER      |          >          |
+|       NUMBER      |          6          |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|       STRING      |    "good to go!"    |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|      KEYWORD      |         else        |
+|       COLON       |          :          |
+|      NEWLINE      |                     |
+|       INDENT      |                     |
+| BUILT_IN_FUNCTION |        print        |
+|       LPAREN      |          (          |
+|       STRING      |      "alright"      |
+|       RPAREN      |          )          |
+|      NEWLINE      |                     |
+|       DEDENT      |                     |
+|       DEDENT      |                     |
+|        EOF        |                     |
++-------------------+---------------------+

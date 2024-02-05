@@ -25,6 +25,7 @@ class Lexer:
             self._line_number = line_number + 1
             if line.strip():  # skip empty lines
                 self.get_line_tokens(line)
+                self._tokens.add(("NEWLINE", ""))
 
         while self._current_indentation > 0:
             self._tokens.add(("DEDENT", ""))
@@ -167,6 +168,9 @@ class Lexer:
         self._lexeme += current_char
 
     def add_token(self):
+        if self._lexeme == "":
+            return
+
         self._tokens.add(self.classify_token())
         self._lexeme = ""
         self._current_state = 0
@@ -185,8 +189,6 @@ class Lexer:
             token_name = constants.DELIMITERS[self._lexeme]
         elif self._lexeme in constants.BUILT_IN_FUNCTIONS:
             token_name = "BUILT_IN_FUNCTION"
-        elif self._lexeme == "":
-            token_name = "NEWLINE"
         elif self._current_state == 3:
             token_name = "FLOAT" if "." in self._lexeme else "NUMBER"
         elif self._current_state == 8:

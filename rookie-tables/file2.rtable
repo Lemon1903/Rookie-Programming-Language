@@ -1,32 +1,30 @@
-+-------------------+------------+
-|       TOKEN       |   LEXEME   |
-+-------------------+------------+
-|      KEYWORD      |     if     |
-|       NUMBER      |     1      |
-|      KEYWORD      |     in     |
-|      LBRACKET     |     [      |
-|       NUMBER      |     1      |
-|       COMMA       |     ,      |
-|       NUMBER      |     2      |
-|      RBRACKET     |     ]      |
-|       COLON       |     :      |
-|      NEWLINE      |            |
-|       INDENT      |            |
-| BUILT_IN_FUNCTION |   print    |
-|       LPAREN      |     (      |
-|       STRING      | "not here" |
-|       RPAREN      |     )      |
-|      NEWLINE      |            |
-|      KEYWORD      |     if     |
-|  BOOLEAN_LITERAL  |    true    |
-|       COLON       |     :      |
-|      NEWLINE      |            |
-|       INDENT      |            |
-| BUILT_IN_FUNCTION |   print    |
-|       LPAREN      |     (      |
-|       RPAREN      |     )      |
-|      NEWLINE      |            |
-|       DEDENT      |            |
-|       DEDENT      |            |
-|        EOF        |            |
-+-------------------+------------+
++-------------------+--------+
+|       TOKEN       | LEXEME |
++-------------------+--------+
+|      KEYWORD      |  for   |
+|     IDENTIFIER    | array  |
+|      KEYWORD      |   in   |
+|     IDENTIFIER    | arrays |
+|       COLON       |   :    |
+|      NEWLINE      |        |
+|       INDENT      |        |
+|      KEYWORD      |  for   |
+|     IDENTIFIER    | index  |
+|       COMMA       |   ,    |
+|     IDENTIFIER    | value  |
+|      KEYWORD      |   in   |
+|     IDENTIFIER    | array  |
+|       COLON       |   :    |
+|      NEWLINE      |        |
+|       INDENT      |        |
+| BUILT_IN_FUNCTION | print  |
+|       LPAREN      |   (    |
+|     IDENTIFIER    | index  |
+|       COMMA       |   ,    |
+|     IDENTIFIER    | value  |
+|       RPAREN      |   )    |
+|      NEWLINE      |        |
+|       DEDENT      |        |
+|       DEDENT      |        |
+|        EOF        |        |
++-------------------+--------+

@@ -1,4 +1,3 @@
-if 1 in [1, 2]:
-    print("not here")
-    if true:
-        print()
+for array in arrays:
+    for index, value in array:
+        print(index, value)

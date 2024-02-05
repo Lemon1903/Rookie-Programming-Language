@@ -1,7 +1,7 @@
 rook_pl ::= statement+
 statement ::= simple_stmt | compound_stmt
 
-simple_stmt ::= (dec_state | ass_state | in_state | out_state) NEWLIUNE 
+simple_stmt ::= (dec_state | ass_state | out_state) NEWLIUNE 
 compound_stmt ::= cond_state | iter_state | func_state
 
 identifier ::= alpha alphanumeric* (('_' | alphanumeric)* alphanumeric)?
@@ -24,10 +24,10 @@ value ::= identifier | number | string | bool_literals | array | '(' expression 
 
 iden_list ::= identifier (',' identifier)*
 expr_list ::= expression (',' expression)*
-dec_state ::= iden_list '=' expr_list
+dec_state ::= iden_list '=' (in_state | expr_list)
 ass_state ::= identifier ass_op expression
 
-in_state ::= identifier '=' 'input' '(' string? ')'
+in_state ::= 'input' '(' string? ')'
 out_state ::= 'print' '(' expr_list? (',' out_arg)? ')'
 out_arg ::= 'separator' '=' (' ' | symbols)
 
@@ -39,6 +39,7 @@ which_st ::= 'which' identifier ':' ins_block
 block ::= NEWLINE INDENT statement+ DEDENT
 ins_block ::= NEWLINE INDENT ins_part+ DEDENT
 ins_part ::= 'instance' [rel_op] (number | string) ':' block
+default_part ::= 'default' ':' block
 
 iter_state ::= while_loop | for_loop
 while_loop ::= 'while' expression ':' block

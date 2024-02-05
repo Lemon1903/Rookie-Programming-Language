@@ -4,4 +4,29 @@ define main():
         for index, value in array:
             print(index, value)
 
-print("End of file")
+    while 5 + 5 < 6 * (7 - 7):
+        print("inside while loop")
+
+    var = 5
+    which var:
+        instance < 5:
+            print("less than 5")
+        instance 5:
+            print("is 5")
+        instance > 5:
+            print("greater than 5")
+        default:
+            print("none of the above")
+
+    var += 5
+    name = input("what's your name?")
+    age = input()
+    string = "just a string"
+    print(var, age)
+
+    if age < 6:
+        print("too young")
+    elif age > 6:
+        print("good to go!")
+    else:
+        print("alright")

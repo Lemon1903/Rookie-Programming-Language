@@ -115,22 +115,32 @@ class Parser:
 
     # -- Expression End --
 
-    def inst_block(self):
+    def ins_block(self):
         if not self.consume("NEWLINE"):
             raise Exception("Expected newline")
 
         if not self.consume("INDENT"):
             raise Exception("Expected indentation")
 
+        # instance part
         while self.match("lexeme", "instance") and self.consume("KEYWORD"):
             # consume optional relational operator
             if self.match("lexeme", ["<", ">", "==", "!=", ">=", "<="]):
                 self.consume(self.current_token)
 
             # comparison part
-            if not self.consume("IDENTIFIER") or self.consume("STRING"):
-                raise Exception("Only accepts identifier or string")
+            if self.match("token", ["NUMBER", "STRING"]):
+                self.consume(self.current_token)
+            else:
+                raise Exception("Expected number or string")
 
+            if not self.consume("COLON"):
+                raise Exception("Expected colon ':'")
+            self.block()
+
+        # default part
+        if self.match("lexeme", "default"):
+            self.consume("KEYWORD")
             if not self.consume("COLON"):
                 raise Exception("Expected colon ':'")
             self.block()
@@ -162,6 +172,12 @@ class Parser:
 
         if not self.consume("ASSIGN"):
             raise Exception("Expected assignment '='")
+
+        # input statement
+        if self.match("lexeme", "input"):
+            self.input_statement()
+            return
+
         self.expression()
 
         # optional zero or more expressions
@@ -174,7 +190,7 @@ class Parser:
 
     def input_statement(self):
         # consume 'input' keyword
-        self.consume("KEYWORD")
+        self.consume("BUILT_IN_FUNCTION")
         if not self.consume("LPAREN"):
             raise Exception("Expected '(' after 'input'")
 
@@ -213,13 +229,10 @@ class Parser:
         self.consume("IDENTIFIER")
 
         # declaration statement
-        if self.match("token", "COMMA") or self.match("token", "ASSIGN"):
+        if self.match("token", ["COMMA", "ASSIGN"]):
             self.declaration_statement()
-        # input statement
-        elif self.consume("ASSIGN") and self.match("lexeme", "input"):
-            self.input_statement()
         # assignment statement
-        elif self.match("lexeme", "=, +=, -=, *=, /="):
+        elif self.match("lexeme", ["+=", "-=", "*=", "/="]):
             self.assign_statement()
         else:
             raise Exception("Invalid statement")
@@ -260,7 +273,7 @@ class Parser:
 
         if not self.consume("COLON"):
             raise Exception("Expected colon ':'")
-        self.inst_block()
+        self.ins_block()
 
     def while_statement(self):
         self.consume("KEYWORD")
