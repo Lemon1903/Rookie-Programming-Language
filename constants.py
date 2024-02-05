@@ -53,6 +53,7 @@ KEYWORDS = [
     "which",
     "instance",
     "default",
+    "separator",
 ]
 BOOLEAN_LITERAL = ["true", "false"]
 BUILT_IN_FUNCTIONS = ["print", "input"]

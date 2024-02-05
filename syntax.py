@@ -44,8 +44,7 @@ class Parser:
             self.not_test()
 
     def not_test(self):
-        if not self.consume("NOT"):
-            raise Exception("Expected 'not' keyword")
+        self.consume("NOT")
         self.comparison()
 
     def comparison(self):
@@ -74,17 +73,18 @@ class Parser:
         self.value()
 
     def value(self):
+        if self.match("token", ["NUMBER", "FLOAT", "STRING", "BOOLEAN_LITERAL"]):
+            self.consume(self.current_token)
         # array
-        if self.match("token", "LBRACKET"):
+        elif self.match("token", "LBRACKET"):
             self.array()
         # expression
         elif self.consume("LPAREN"):
             self.expression()
             if not self.consume("RPAREN"):
                 raise Exception("Expected closing parenthesis ')'")
-
-        # number, identifier, string, bool_literal
-        self.consume(self.current_token)
+        else:
+            raise Exception("Invalid value")
 
     def array(self):
         self.consume("LBRACKET")
@@ -153,15 +153,85 @@ class Parser:
         if not self.consume("DEDENT"):
             raise Exception("Expected dedent")
 
+    # ---- Simple Statement ----
+
+    def declaration_statement(self):
+        # optional zero or more identifiers
+        while self.match(",", "COMMA"):
+            if not self.consume("IDENTIFIER"):
+                raise Exception("Expected identifier")
+
+        if not self.consume("ASSIGN"):
+            raise Exception("Expected assignment '='")
+        self.expression()
+
+        # optional zero or more expressions
+        while self.consume("COMMA"):
+            self.expression()
+
+    def assign_statement(self):
+        self.consume(self.current_token)
+        self.expression()
+
+    def input_statement(self):
+        # consume 'input' keyword
+        self.consume("KEYWORD")
+        if not self.consume("LPAREN"):
+            raise Exception("Expected '(' after 'input'")
+
+        self.consume("STRING")
+        if not self.consume("RPAREN"):
+            raise Exception("Expected ')' after arguments")
+
+    def output_statement(self):
+        # consume 'print' keyword
+        self.consume("BUILT_IN_FUNCTION")
+        if not self.consume("LPAREN"):
+            raise Exception("Expected '(' after 'print'")
+
+        # optional expressions
+        while not self.match("token", ["RPAREN", "KEYWORD"]):
+            self.expression()
+            if not self.consume("COMMA"):
+                break
+
+        # optional separator argument
+        if self.match("lexeme", "separator"):
+            if not self.consume("ASSIGN"):
+                raise Exception("Error: Argument 'separator' is not defined")
+            if not self.consume("STRING"):
+                raise Exception("Expected an argument string value")
+
+        if not self.consume("RPAREN"):
+            raise Exception("Expected ')' after expressions and arguments")
+
     def simple_stmt(self):
-        pass
+        if self.match("lexeme", "print"):
+            self.output_statement()
+        self.consume("IDENTIFIER")
+
+        # declaration statement
+        if self.match("token", "COMMA") or self.match("token", "ASSIGN"):
+            self.declaration_statement()
+        # input statement
+        elif self.consume("ASSIGN") and self.match("lexeme", "input"):
+            self.input_statement()
+        # assignment statement
+        elif self.match("lexeme", "=, +=, -=, *=, /="):
+            self.assign_statement()
+        else:
+            raise Exception("Invalid statement")
+
+    # ---- Simple Statement End ----
+
+    # ---- Compound Statement ----
 
     def if_statement(self):
         self.consume("KEYWORD")
         self.expression()
 
         if not self.consume("COLON"):
-            raise Exception("Expected colon ':'")
+            raise Exception("Expected colon ':'z")
         self.block()
 
         # optional zero or more elif statements
@@ -213,7 +283,7 @@ class Parser:
             raise Exception("Expected colon ':'")
         self.block()
 
-    def function_def(self):
+    def function_statement(self):
         self.consume("KEYWORD")
         if not self.consume("IDENTIFIER"):
             raise Exception("Expected identifier")
@@ -247,7 +317,9 @@ class Parser:
         elif self.match("lexeme", "for"):
             self.for_statement()
         elif self.match("lexeme", "define"):
-            self.function_def()
+            self.function_statement()
+
+    # ---- Compound Statement End ----
 
     def statement(self):
         # simple stmt
