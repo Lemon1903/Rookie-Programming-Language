@@ -42,7 +42,7 @@ ins_part ::= 'instance' [rel_op] (number | string) ':' block
 
 iter_state ::= while_loop | for_loop
 while_loop ::= 'while' expression ':' block
-for_loop ::= 'for' var (',' var)? 'in' array ':' block
+for_loop ::= 'for' var (',' var)? 'in' (identifier | array) ':' block
 
 func_state ::= 'define' identifier '(' params? ')' ':' block
 params ::= param (',' param)*

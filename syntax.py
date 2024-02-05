@@ -75,7 +75,7 @@ class Parser:
         self.value()
 
     def value(self):
-        if self.match("token", ["NUMBER", "FLOAT", "STRING", "BOOLEAN_LITERAL"]):
+        if self.match("token", ["IDENTIFIER", "NUMBER", "FLOAT", "STRING", "BOOLEAN_LITERAL"]):
             self.consume(self.current_token)
         # array
         elif self.match("token", "LBRACKET"):
@@ -196,6 +196,7 @@ class Parser:
 
         # optional separator argument
         if self.match("lexeme", "separator"):
+            self.consume("KEYWORD")
             if not self.consume("ASSIGN"):
                 raise Exception("Error: Argument 'separator' is not defined")
             if not self.consume("STRING"):
@@ -280,6 +281,13 @@ class Parser:
         if not self.consume("KEYWORD"):
             raise Exception("Expected keyword 'in'")
 
+        if self.match("token", "LBRACKET"):
+            self.array()
+        elif self.match("token", "IDENTIFIER"):
+            self.consume("IDENTIFIER")
+        else:
+            raise Exception("Expected array or identifier")
+
         if not self.consume("COLON"):
             raise Exception("Expected colon ':'")
         self.block()
@@ -338,6 +346,6 @@ class Parser:
             self.statement()
 
     def parse(self):
-        print(self.rook_pl())
+        self.rook_pl()
         if self.tokens.is_empty():
             print("Parsing successful")
