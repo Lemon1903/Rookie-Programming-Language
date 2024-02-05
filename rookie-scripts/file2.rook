@@ -1,1 +1,2 @@
-(5 and 6) + 6 - (4 == 4)
+if 1 not in [1, 2]:
+    print("not here")

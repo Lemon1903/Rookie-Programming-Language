@@ -1,40 +1,21 @@
-+-------------------+--------+
-|       TOKEN       | LEXEME |
-+-------------------+--------+
-|      KEYWORD      | define |
-|     IDENTIFIER    |  fun1  |
-|       LPAREN      |   (    |
-|       RPAREN      |   )    |
-|       COLON       |   :    |
-|      NEWLINE      |        |
-|       INDENT      |        |
-|      KEYWORD      |   if   |
-|       NUMBER      |   1    |
-|        LESS       |   <    |
-|       NUMBER      |   2    |
-|       COLON       |   :    |
-|      NEWLINE      |        |
-|       INDENT      |        |
-| BUILT_IN_FUNCTION | print  |
-|       LPAREN      |   (    |
-|       STRING      | "hey"  |
-|       RPAREN      |   )    |
-|      NEWLINE      |        |
-|       DEDENT      |        |
-|      KEYWORD      |  else  |
-|       COLON       |   :    |
-|      NEWLINE      |        |
-|       INDENT      |        |
-| BUILT_IN_FUNCTION | print  |
-|       LPAREN      |   (    |
-|       STRING      |  "hi"  |
-|       RPAREN      |   )    |
-|      NEWLINE      |        |
-|       DEDENT      |        |
-|       DEDENT      |        |
-| BUILT_IN_FUNCTION | print  |
-|       LPAREN      |   (    |
-|       STRING      | "end"  |
-|       RPAREN      |   )    |
-|        EOF        |        |
-+-------------------+--------+
++-------------------+------------+
+|       TOKEN       |   LEXEME   |
++-------------------+------------+
+|      KEYWORD      |     if     |
+|       NUMBER      |     1      |
+|        NOT        |    not     |
+|      KEYWORD      |     in     |
+|      LBRACKET     |     [      |
+|       NUMBER      |     1      |
+|       COMMA       |     ,      |
+|       NUMBER      |     2      |
+|      RBRACKET     |     ]      |
+|       COLON       |     :      |
+|      NEWLINE      |            |
+|       INDENT      |            |
+| BUILT_IN_FUNCTION |   print    |
+|       LPAREN      |     (      |
+|       STRING      | "not here" |
+|       RPAREN      |     )      |
+|        EOF        |            |
++-------------------+------------+
