@@ -1,2 +1,4 @@
-if 1 not in [1, 2]:
+if 1 in [1, 2]:
     print("not here")
+    if true:
+        print()

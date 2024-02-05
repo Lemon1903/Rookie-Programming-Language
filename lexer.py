@@ -26,6 +26,12 @@ class Lexer:
             if line.strip():  # skip empty lines
                 self.get_line_tokens(line)
 
+        while self._current_indentation > 0:
+            self._tokens.add(("DEDENT", ""))
+            self._current_indentation -= constants.INDENT_SIZE
+
+        self._tokens.add(("EOF", ""))
+
     # Input preprocessing
     def preprocess_input(self, code: str):
         # removing single line comments
@@ -180,7 +186,7 @@ class Lexer:
         elif self._lexeme in constants.BUILT_IN_FUNCTIONS:
             token_name = "BUILT_IN_FUNCTION"
         elif self._lexeme == "":
-            token_name = "NEWLINE" if self._line_number < len(self._code_lines) else "EOF"
+            token_name = "NEWLINE"
         elif self._current_state == 3:
             token_name = "FLOAT" if "." in self._lexeme else "NUMBER"
         elif self._current_state == 8:

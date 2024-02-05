@@ -3,7 +3,6 @@
 +-------------------+------------+
 |      KEYWORD      |     if     |
 |       NUMBER      |     1      |
-|        NOT        |    not     |
 |      KEYWORD      |     in     |
 |      LBRACKET     |     [      |
 |       NUMBER      |     1      |
@@ -17,5 +16,17 @@
 |       LPAREN      |     (      |
 |       STRING      | "not here" |
 |       RPAREN      |     )      |
+|      NEWLINE      |            |
+|      KEYWORD      |     if     |
+|  BOOLEAN_LITERAL  |    true    |
+|       COLON       |     :      |
+|      NEWLINE      |            |
+|       INDENT      |            |
+| BUILT_IN_FUNCTION |   print    |
+|       LPAREN      |     (      |
+|       RPAREN      |     )      |
+|      NEWLINE      |            |
+|       DEDENT      |            |
+|       DEDENT      |            |
 |        EOF        |            |
 +-------------------+------------+

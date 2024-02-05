@@ -1,7 +1,7 @@
 rook_pl ::= statement+
-statement ::= (simple_stmt | compound_stmt) NEWLINE
+statement ::= simple_stmt | compound_stmt
 
-simple_stmt ::= dec_state | ass_state | in_state | out_state 
+simple_stmt ::= (dec_state | ass_state | in_state | out_state) NEWLIUNE 
 compound_stmt ::= cond_state | iter_state | func_state
 
 identifier ::= alpha alphanumeric* (('_' | alphanumeric)* alphanumeric)?

@@ -19,5 +19,5 @@ if __name__ == "__main__":
     lexer.start_parse()
     lexer.output_table()
 
-    # parser = Parser(lexer.get_tokens())
-    # parser.parse()
+    parser = Parser(lexer.get_tokens())
+    parser.parse()
