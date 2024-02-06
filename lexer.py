@@ -5,6 +5,7 @@ import re
 from prettytable import PrettyTable
 
 import constants
+from token_ import Token
 from token_stream import TokenStream
 
 
@@ -23,15 +24,16 @@ class Lexer:
     def start_parse(self):
         for line_number, line in enumerate(self._code_lines):
             self._line_number = line_number + 1
+
             if line.strip():  # skip empty lines
                 self.get_line_tokens(line)
-                self._tokens.add(("NEWLINE", ""))
+                self._tokens.add(Token("NEWLINE", "", self._line_number, line))
 
         while self._current_indentation > 0:
-            self._tokens.add(("DEDENT", ""))
+            self._tokens.add(Token("DEDENT", "", self._line_number))
             self._current_indentation -= constants.INDENT_SIZE
 
-        self._tokens.add(("EOF", ""))
+        self._tokens.add(Token("EOF", "", self._line_number))
 
     # Input preprocessing
     def preprocess_input(self, code: str):
@@ -48,12 +50,12 @@ class Lexer:
         # compare indentation with the previous line
         indentation = self.analyze_indentation(line)
         if indentation > self._current_indentation:
-            self._tokens.add(("INDENT", ""))
+            self._tokens.add(Token("INDENT", "", self._line_number))
             self._current_indentation = indentation
         elif indentation < self._current_indentation:
             # Generate DEDENT tokens for each level decreased
             while indentation < self._current_indentation:
-                self._tokens.add(("DEDENT", ""))
+                self._tokens.add(Token("DEDENT", "", self._line_number))
                 self._current_indentation -= constants.INDENT_SIZE
 
         self.generate_tokens(line)
@@ -88,7 +90,7 @@ class Lexer:
 
                 self.update_lexeme(current_char)
                 if current_char in constants.DELIMITERS:
-                    self.add_token()
+                    self.add_token(line)
                 elif current_char in constants.ALPHABET:
                     self._current_state = 1
                 elif current_char in constants.DIGITS:
@@ -108,7 +110,7 @@ class Lexer:
                 elif current_char == "_":
                     self._current_state = 2
                 else:
-                    self.add_token()
+                    self.add_token(line)
             # identifier with underscore
             elif self._current_state == 2:
                 if current_char == "_":
@@ -128,7 +130,7 @@ class Lexer:
                     self._current_state = 4
                     self.update_lexeme(current_char)
                 else:
-                    self.add_token()
+                    self.add_token(line)
             # float number
             elif self._current_state == 4:
                 if current_char in constants.DIGITS:
@@ -144,34 +146,37 @@ class Lexer:
                     # invalid double operators (-+, ++, =+, --) and not equal (!=)
                     if current_char in constants.OPERATORS or self._current_state == 7:
                         raise Exception(f"Invalid lexeme: {self._lexeme + current_char}")
-                    self.add_token()
+                    self.add_token(line)
             # double operators (+= -= *= /= >= <= ==)
             elif self._current_state == 6:
                 if current_char == "=":
                     raise Exception(f"Invalid lexeme: {self._lexeme + current_char}")
                 else:
-                    self.add_token()
+                    self.add_token(line)
             # string
             elif self._current_state == 8:
                 self.update_lexeme(current_char)
                 if current_char == '"':  # closing quote
-                    self.add_token()
+                    self.add_token(line)
 
         # checks if string is closed
         if self._current_state == 8:
             raise Exception(f"String was not closed: {self._lexeme}")
 
-        self.add_token()
+        self.add_token(line)
 
     def update_lexeme(self, current_char):
         self._cursor += 1
         self._lexeme += current_char
 
-    def add_token(self):
+    def add_token(self, line):
         if self._lexeme == "":
             return
 
-        self._tokens.add(self.classify_token())
+        classified = self.classify_token()
+        self._tokens.add(
+            Token(classified[0], classified[1], self._line_number, line, self._cursor, self._current_indentation)
+        )
         self._lexeme = ""
         self._current_state = 0
 
@@ -197,9 +202,9 @@ class Lexer:
 
     def output_table(self):
         # print tokens to console
-        tokens_table = PrettyTable(["TOKEN", "LEXEME"])
-        tokens_table.add_rows(self._tokens.get_tokens())
-        print(tokens_table)
+        tokens_table = PrettyTable(["TOKEN", "LEXEME", "COLUMN"])
+        for token in self._tokens.get_tokens():
+            tokens_table.add_row([token.name, token.lexeme, token.column_no])
 
         # write tokens to file
         output_path = os.path.join("rookie-tables", f"{self._filename}.rtable")

@@ -1,9 +1,11 @@
-from typing import List, Tuple
+from typing import List
+
+from token_ import Token
 
 
 class TokenStream:
     def __init__(self):
-        self._tokens: List[Tuple[str, str]] = []
+        self._tokens: List[Token] = []
 
     def get_tokens(self):
         return self._tokens
@@ -16,13 +18,14 @@ class TokenStream:
     def peek(self):
         if self._tokens:
             return self._tokens[0]
+        else:
+            raise Exception("Cannot peek to an empty queue")
 
     # adds a token to the end of the list
-    def add(self, token: Tuple[str, str]):
+    def add(self, token: Token):
         self._tokens.append(token)
 
     # removes the first token from the list
     def advance(self):
-        if len(self._tokens) < 1:
-            return None
-        return self._tokens.pop(0)
+        if len(self._tokens) > 0:
+            return self._tokens.pop(0)

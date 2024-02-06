@@ -12,7 +12,7 @@ define main():
         instance < 5:
             print("less than 5")
         instance 5:
-            print("is 5")
+            print()
         instance > 5:
             print("greater than 5")
         default:

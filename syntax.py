@@ -1,11 +1,13 @@
+import os
+
 from token_stream import TokenStream
 
 
 class Parser:
     def __init__(self, tokens: TokenStream):
         self.tokens = tokens
-        token = self.tokens.peek()
-        self.current_token = token[0] if token else None
+        self.previous_token = None
+        self.advance(False)
 
     # ================ HELPER METHODS ================
     def match(self, type: str, to_match: str | list[str]):
@@ -15,20 +17,29 @@ class Parser:
         if self.tokens.is_empty():
             return False
 
-        top_token = self.tokens.peek()
-        lexeme = top_token[1] if top_token else None
-
         if isinstance(to_match, list):
-            return (self.current_token if type == "token" else lexeme) in to_match
-        return (self.current_token if type == "token" else lexeme) == to_match
+            return (self.current_token if type == "token" else self.current_lexeme) in to_match
+        return (self.current_token if type == "token" else self.current_lexeme) == to_match
 
     def consume(self, token):
         if self.match("token", token):
-            self.tokens.advance()
-            next_token = self.tokens.peek()
-            self.current_token = next_token[0] if next_token else None
+            self.advance()
             return True
         return False
+
+    def advance(self, do_advance: bool = True):
+        if do_advance:
+            self.previous_token = self.tokens.advance()
+        if not self.tokens.is_empty():
+            next_token = self.tokens.peek()
+            self.current_token = next_token.name
+            self.current_lexeme = next_token.lexeme
+
+    def print_error(self, message: str):
+        token = self.tokens.peek()
+        print(f"Error at line {token.line_no}: {message}\n{token.line_code}")
+        print(" " * (token.column_no - token.indent_level - len(token.lexeme) + 2) + "^" * len(token.lexeme))
+        os._exit(1)
 
     # ================ PARSER METHODS ================
     # ---- Expression ----
@@ -53,7 +64,7 @@ class Parser:
         self.expr()
         while self.match("lexeme", comp_ops):
             if self.consume("NOT") and (not self.match("lexeme", "in") or not self.consume("KEYWORD")):
-                raise Exception("Expected 'in' keyword after 'not' keyword")
+                self.print_error("Expected 'in' keyword after 'not' keyword")
             else:
                 self.consume("KEYWORD" if self.match("lexeme", "in") else self.current_token)
             self.expr()
@@ -84,9 +95,9 @@ class Parser:
         elif self.consume("LPAREN"):
             self.expression()
             if not self.consume("RPAREN"):
-                raise Exception("Expected closing parenthesis ')'")
+                self.print_error("Expected closing parenthesis ')'")
         else:
-            raise Exception("Invalid value")
+            self.print_error("Invalid value")
 
     def array(self):
         self.consume("LBRACKET")
@@ -111,16 +122,16 @@ class Parser:
                 break
 
         if not self.consume("RBRACKET"):
-            raise Exception("Expected closing bracket ']'")
+            self.print_error("Expected closing bracket ']'")
 
     # -- Expression End --
 
     def ins_block(self):
         if not self.consume("NEWLINE"):
-            raise Exception("Expected newline")
+            self.print_error("Expected newline")
 
         if not self.consume("INDENT"):
-            raise Exception("Expected indentation")
+            self.print_error("Expected indentation")
 
         # instance part
         while self.match("lexeme", "instance") and self.consume("KEYWORD"):
@@ -132,35 +143,35 @@ class Parser:
             if self.match("token", ["NUMBER", "STRING"]):
                 self.consume(self.current_token)
             else:
-                raise Exception("Expected number or string")
+                self.print_error("Expected number or string")
 
             if not self.consume("COLON"):
-                raise Exception("Expected colon ':'")
+                self.print_error("Expected colon ':'")
             self.block()
 
         # default part
         if self.match("lexeme", "default"):
             self.consume("KEYWORD")
             if not self.consume("COLON"):
-                raise Exception("Expected colon ':'")
+                self.print_error("Expected colon ':'")
             self.block()
 
         if not self.consume("DEDENT"):
-            raise Exception("Expected dedent")
+            self.print_error("Expected dedent")
 
     def block(self):
         if not self.consume("NEWLINE"):
-            raise Exception("Expected newline")
+            self.print_error("Expected newline")
 
         if not self.consume("INDENT"):
-            raise Exception("Expected indentation")
+            self.print_error("Expected indentation")
 
         # run all statements in block
         while not self.tokens.is_empty() and not self.match("token", "DEDENT"):
             self.statement()
 
         if not self.consume("DEDENT"):
-            raise Exception("Expected dedent")
+            self.print_error("Expected dedent")
 
     # ---- Simple Statement ----
 
@@ -168,10 +179,10 @@ class Parser:
         # optional zero or more identifiers
         while self.match("token", "COMMA"):
             if not self.consume("IDENTIFIER"):
-                raise Exception("Expected identifier")
+                self.print_error("Expected identifier")
 
         if not self.consume("ASSIGN"):
-            raise Exception("Expected assignment '='")
+            self.print_error("Expected assignment '='")
 
         # input statement
         if self.match("lexeme", "input"):
@@ -192,34 +203,33 @@ class Parser:
         # consume 'input' keyword
         self.consume("BUILT_IN_FUNCTION")
         if not self.consume("LPAREN"):
-            raise Exception("Expected '(' after 'input'")
+            self.print_error("Expected '(' after 'input'")
 
         self.consume("STRING")
         if not self.consume("RPAREN"):
-            raise Exception("Expected ')' after arguments")
+            self.print_error("Expected ')' after arguments")
 
     def output_statement(self):
         # consume 'print' keyword
         self.consume("BUILT_IN_FUNCTION")
         if not self.consume("LPAREN"):
-            raise Exception("Expected '(' after 'print'")
+            self.print_error("Expected '(' after 'print'")
 
         # optional expressions
-        while not self.match("token", ["RPAREN", "KEYWORD"]):
+        while not self.match("token", "RPAREN") and not self.match("lexeme", "separator"):
             self.expression()
             if not self.consume("COMMA"):
                 break
 
         # optional separator argument
-        if self.match("lexeme", "separator"):
-            self.consume("KEYWORD")
+        if self.consume("KEYWORD"):
             if not self.consume("ASSIGN"):
-                raise Exception("Error: Argument 'separator' is not defined")
+                self.print_error("Argument 'separator' is not defined")
             if not self.consume("STRING"):
-                raise Exception("Expected an argument string value")
+                self.print_error("Expected an argument string value")
 
         if not self.consume("RPAREN"):
-            raise Exception("Expected ')' after expressions and arguments")
+            self.print_error("Expected ')' after expressions and arguments")
 
     def simple_stmt(self):
         if self.match("lexeme", "print"):
@@ -235,7 +245,7 @@ class Parser:
         elif self.match("lexeme", ["+=", "-=", "*=", "/="]):
             self.assign_statement()
         else:
-            raise Exception("Invalid statement")
+            self.print_error("Invalid statement")
 
     # ---- Simple Statement End ----
 
@@ -246,7 +256,7 @@ class Parser:
         self.expression()
 
         if not self.consume("COLON"):
-            raise Exception("Expected colon ':'")
+            self.print_error("Expected colon ':'")
         self.block()
 
         # optional zero or more elif statements
@@ -255,7 +265,7 @@ class Parser:
             self.expression()
 
             if not self.consume("COLON"):
-                raise Exception("Expected colon ':'")
+                self.print_error("Expected colon ':'")
             self.block()
 
         # optional else statement
@@ -263,70 +273,70 @@ class Parser:
             self.consume("KEYWORD")
 
             if not self.consume("COLON"):
-                raise Exception("Expected colon ':'")
+                self.print_error("Expected colon ':'")
             self.block()
 
     def which_statement(self):
         self.consume("KEYWORD")
         if not self.consume("IDENTIFIER"):
-            raise Exception("Expected identifier")
+            self.print_error("Expected identifier")
 
         if not self.consume("COLON"):
-            raise Exception("Expected colon ':'")
+            self.print_error("Expected colon ':'")
         self.ins_block()
 
     def while_statement(self):
         self.consume("KEYWORD")
         self.expression()
         if not self.consume("COLON"):
-            raise Exception("Expected colon ':'")
+            self.print_error("Expected colon ':'")
         self.block()
 
     def for_statement(self):
         self.consume("KEYWORD")
         if not self.consume("IDENTIFIER"):
-            raise Exception("Expected identifier")
+            self.print_error("Expected identifier")
 
         # optional another identifier
         if self.consume("COMMA") and not self.consume("IDENTIFIER"):
-            raise Exception("Expected identifier")
+            self.print_error("Expected identifier")
 
         if not self.consume("KEYWORD"):
-            raise Exception("Expected keyword 'in'")
+            self.print_error("Expected keyword 'in'")
 
         if self.match("token", "LBRACKET"):
             self.array()
         elif self.match("token", "IDENTIFIER"):
             self.consume("IDENTIFIER")
         else:
-            raise Exception("Expected array or identifier")
+            self.print_error("Expected array or identifier")
 
         if not self.consume("COLON"):
-            raise Exception("Expected colon ':'")
+            self.print_error("Expected colon ':'")
         self.block()
 
     def function_statement(self):
         self.consume("KEYWORD")
         if not self.consume("IDENTIFIER"):
-            raise Exception("Expected identifier")
+            self.print_error("Expected identifier")
 
         if not self.consume("LPAREN"):
-            raise Exception("Expected opening parenthesis '('")
+            self.print_error("Expected opening parenthesis '('")
 
         # optional zero or more parameters
         while not self.match("token", "RPAREN"):
             if not self.consume("IDENTIFIER"):
-                raise Exception("Expected identifier")
+                self.print_error("Expected identifier")
             if self.consume("ASSIGN"):
                 self.expression()
             if not self.consume("COMMA"):
                 break
 
         if not self.consume("RPAREN"):
-            raise Exception("Expected closing parenthesis ')'")
+            self.print_error("Expected closing parenthesis ')'")
 
         if not self.consume("COLON"):
-            raise Exception("Expected colon ':'")
+            self.print_error("Expected colon ':'")
         self.block()
 
     def compound_stmt(self):
@@ -348,7 +358,7 @@ class Parser:
         if self.match("token", ["IDENTIFIER", "BUILT_IN_FUNCTION"]):
             self.simple_stmt()
             if not self.consume("NEWLINE"):
-                raise Exception("Expected newline at the end of the statement")
+                self.print_error("Expected newline at the end of the statement")
 
         # compound stmt
         elif self.match("token", "KEYWORD"):
