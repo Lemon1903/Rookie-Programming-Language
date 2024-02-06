@@ -115,13 +115,13 @@ class Parser:
         # array instantiation using 'to' keyword
         if self.consume("KEYWORD"):
             if not self.consume("NUMBER"):
-                raise Exception("Expected integer after 'to' keyword")
+                self.print_error("Expected integer after 'to' keyword")
             # check if there is an additional step keyword
             if self.match("lexeme", "step") and self.consume("KEYWORD"):
                 if not self.consume("COLON"):
-                    raise Exception("Expected colon ':'")
+                    self.print_error("Expected colon ':'")
                 if not self.consume("NUMBER"):
-                    raise Exception("Expected integer after 'step' keyword")
+                    self.print_error("Expected integer after 'step' keyword")
 
         if not self.consume("RBRACKET"):
             self.print_error("Expected closing bracket ']'")
@@ -207,7 +207,9 @@ class Parser:
         if not self.consume("LPAREN"):
             self.print_error("Expected '(' after 'input'")
 
-        self.consume("STRING")
+        if not self.match("token", "RPAREN") and not self.consume("STRING"):
+            self.print_error("Expected string argument for 'input' function")
+
         if not self.consume("RPAREN"):
             self.print_error("Expected ')' after arguments")
 

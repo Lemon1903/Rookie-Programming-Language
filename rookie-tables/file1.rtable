@@ -12,10 +12,12 @@
 |       ASSIGN      |          =          |   11   |
 |      LBRACKET     |          [          |   13   |
 |       NUMBER      |          1          |   14   |
-|       COMMA       |          ,          |   15   |
-|       NUMBER      |          2          |   17   |
-|       COMMA       |          ,          |   18   |
-|       NUMBER      |          3          |   20   |
+|      KEYWORD      |          to         |   17   |
+|       NUMBER      |          5          |   19   |
+|      KEYWORD      |         step        |   24   |
+|       COLON       |          :          |   25   |
+|       NUMBER      |          5          |   27   |
+|      RBRACKET     |          ]          |   28   |
 |      NEWLINE      |                     |   0    |
 |     IDENTIFIER    |        arrays       |   10   |
 |       ASSIGN      |          =          |   12   |
@@ -44,9 +46,11 @@
 |     IDENTIFIER    |        index        |   17   |
 |       COMMA       |          ,          |   18   |
 |     IDENTIFIER    |        value        |   24   |
-|      KEYWORD      |          in         |   27   |
-|     IDENTIFIER    |        array        |   33   |
-|       COLON       |          :          |   34   |
+|       COMMA       |          ,          |   25   |
+|     IDENTIFIER    |         var3        |   30   |
+|      KEYWORD      |          in         |   33   |
+|     IDENTIFIER    |        array        |   39   |
+|       COLON       |          :          |   40   |
 |      NEWLINE      |                     |   0    |
 |       INDENT      |                     |   0    |
 | BUILT_IN_FUNCTION |        print        |   17   |
