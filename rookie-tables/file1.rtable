@@ -8,6 +8,15 @@
 |       COLON       |          :          |   14   |
 |      NEWLINE      |                     |   0    |
 |       INDENT      |                     |   0    |
+|     IDENTIFIER    |        array        |   9    |
+|       ASSIGN      |          =          |   11   |
+|      LBRACKET     |          [          |   13   |
+|       NUMBER      |          1          |   14   |
+|       COMMA       |          ,          |   15   |
+|       NUMBER      |          2          |   17   |
+|       COMMA       |          ,          |   18   |
+|       NUMBER      |          3          |   20   |
+|      NEWLINE      |                     |   0    |
 |     IDENTIFIER    |        arrays       |   10   |
 |       ASSIGN      |          =          |   12   |
 |      LBRACKET     |          [          |   14   |
@@ -126,8 +135,7 @@
 |       DEDENT      |                     |   0    |
 |     IDENTIFIER    |         var         |   7    |
 |     PLUSASSIGN    |          +=         |   10   |
-|       ASSIGN      |          =          |   12   |
-|       NUMBER      |          5          |   14   |
+|       NUMBER      |          5          |   12   |
 |      NEWLINE      |                     |   0    |
 |     IDENTIFIER    |         name        |   8    |
 |       ASSIGN      |          =          |   10   |

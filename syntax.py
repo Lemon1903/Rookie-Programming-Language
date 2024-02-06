@@ -39,6 +39,7 @@ class Parser:
         token = self.tokens.peek()
         print(f"Error at line {token.line_no}: {message}\n{token.line_code}")
         print(" " * (token.column_no - token.indent_level - len(token.lexeme) + 2) + "^" * len(token.lexeme))
+        # raise Exception("Parsing error")
         os._exit(1)
 
     # ================ PARSER METHODS ================
@@ -102,24 +103,25 @@ class Parser:
     def array(self):
         self.consume("LBRACKET")
 
-        # if self.consume("NUMBER") and self.match("lexeme", "to"):
-        #     self.consume("KEYWORD")
-        #     if not self.consume("NUMBER"):
-        #         raise Exception("Expected integer after 'to' keyword")
-        #     # check if there is an additional step keyword
-        #     if self.match("lexeme", "step") and self.consume("KEYWORD"):
-        #         if not self.consume("COLON"):
-        #             raise Exception("Expected colon ':'")
-        #         if not self.consume("NUMBER"):
-        #             raise Exception("Expected integer after 'step' keyword")
-        #     if not self.consume("RBRACKET"):
-        #         raise Exception("Expected closing bracket ']'")
+        if self.consume("NUMBER"):
+            self.consume("COMMA")
 
         # get all values in array
-        while not self.match("token", "RBRACKET"):
+        while not self.match("token", "RBRACKET") and not self.match("lexeme", "to"):
             self.expression()
             if not self.consume("COMMA"):
                 break
+
+        # array instantiation using 'to' keyword
+        if self.consume("KEYWORD"):
+            if not self.consume("NUMBER"):
+                raise Exception("Expected integer after 'to' keyword")
+            # check if there is an additional step keyword
+            if self.match("lexeme", "step") and self.consume("KEYWORD"):
+                if not self.consume("COLON"):
+                    raise Exception("Expected colon ':'")
+                if not self.consume("NUMBER"):
+                    raise Exception("Expected integer after 'step' keyword")
 
         if not self.consume("RBRACKET"):
             self.print_error("Expected closing bracket ']'")
