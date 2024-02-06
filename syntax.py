@@ -39,7 +39,6 @@ class Parser:
         token = self.tokens.peek()
         print(f"Error at line {token.line_no}: {message}\n{token.line_code}")
         print(" " * (token.column_no - token.indent_level - len(token.lexeme) + 2) + "^" * len(token.lexeme))
-        # raise Exception("Parsing error")
         os._exit(1)
 
     # ================ PARSER METHODS ================

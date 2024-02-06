@@ -2,7 +2,7 @@ define main():
     array = [1 to 5 step: 5]
     arrays = [["string1", "string2"], ["string3", "string4"]]
     for array in arrays:
-        for index, value, var3 in array:
+        for index, value in array:
             print(index, value)
 
     while 5 + 5 < 6 * (7 - 7):

@@ -38,7 +38,7 @@ else_st ::= 'else' ':' block
 which_st ::= 'which' identifier ':' ins_block
 block ::= NEWLINE INDENT statement+ DEDENT
 ins_block ::= NEWLINE INDENT ins_part+ DEDENT
-ins_part ::= 'instance' [rel_op] (number | string) ':' block
+ins_part ::= 'instance' (rel_op)? (number | string) ':' block
 default_part ::= 'default' ':' block
 
 iter_state ::= while_loop | for_loop

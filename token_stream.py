@@ -19,7 +19,7 @@ class TokenStream:
         if self._tokens:
             return self._tokens[0]
         else:
-            raise Exception("Cannot peek to an empty queue")
+            raise Exception("Cannot peek to an empty token stream")
 
     # adds a token to the end of the list
     def add(self, token: Token):
