@@ -27,7 +27,9 @@ class Lexer:
 
             if line.strip():  # skip empty lines
                 self.get_line_tokens(line)
-                self._tokens.add(Token("NEWLINE", "", self._line_number, line))
+                self._tokens.add(
+                    Token("NEWLINE", "", self._line_number, line, self._cursor + 1, self._current_indentation)
+                )
 
         while self._current_indentation > 0:
             self._tokens.add(Token("DEDENT", "", self._line_number))
@@ -50,12 +52,13 @@ class Lexer:
         # compare indentation with the previous line
         indentation = self.analyze_indentation(line)
         if indentation > self._current_indentation:
-            self._tokens.add(Token("INDENT", "", self._line_number))
-            self._current_indentation = indentation
+            while indentation > self._current_indentation:
+                self._tokens.add(Token("INDENT", "", self._line_number, line, self._cursor))
+                self._current_indentation += constants.INDENT_SIZE
         elif indentation < self._current_indentation:
             # Generate DEDENT tokens for each level decreased
             while indentation < self._current_indentation:
-                self._tokens.add(Token("DEDENT", "", self._line_number))
+                self._tokens.add(Token("DEDENT", "", self._line_number, line, self._cursor))
                 self._current_indentation -= constants.INDENT_SIZE
 
         self.generate_tokens(line)
@@ -202,7 +205,7 @@ class Lexer:
 
     def output_table(self):
         # print tokens to console
-        tokens_table = PrettyTable(["TOKEN", "LEXEME", "COLUMN"])
+        tokens_table = PrettyTable(["TOKEN", "LEXEME", "COLUM_NO"])
         for token in self._tokens.get_tokens():
             tokens_table.add_row([token.name, token.lexeme, token.column_no])
 

@@ -1,7 +1,7 @@
 rook_pl ::= statement+
 statement ::= simple_stmt | compound_stmt
 
-simple_stmt ::= (dec_state | ass_state | out_state) NEWLIUNE 
+simple_stmt ::= (dec_state | ass_state | out_state) NEWLINE 
 compound_stmt ::= cond_state | iter_state | func_state
 
 identifier ::= alpha alphanumeric* (('_' | alphanumeric)* alphanumeric)?
@@ -48,6 +48,8 @@ for_loop ::= 'for' var (',' var)? 'in' (identifier | array) ':' block
 func_state ::= 'define' identifier '(' params? ')' ':' block
 params ::= param (',' param)*
 param ::= identifier ('=' expression)?
+call_state ::= identifier '(' args? ')'
+args ::= expression (',' expression)*
 
 
 @terminals

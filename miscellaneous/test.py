@@ -1,1 +1,4 @@
-arrays = [["string1", "string2", ["string3", "string4"]],
+def fun1():
+    print('fun1')
+print('fun1')
+    print('fun1')

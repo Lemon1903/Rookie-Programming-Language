@@ -37,16 +37,24 @@ class Parser:
 
     def print_error(self, message: str):
         token = self.tokens.peek()
+        lexeme_length = len(token.lexeme) if token.lexeme else 1
+
         print(f"Error at line {token.line_no}: {message}\n{token.line_code}")
-        print(" " * (token.column_no - token.indent_level - len(token.lexeme) + 2) + "^" * len(token.lexeme))
+        print(" " * (token.column_no - token.indent_level - lexeme_length + 2) + "^" * lexeme_length)
         os._exit(1)
+
+    def run_statements(self, end_token: str):
+        while not self.tokens.is_empty() and not self.match("token", end_token):
+            if self.consume("INDENT"):
+                self.print_error("Unexpected indentation")
+            self.statement()
 
     # ================ PARSER METHODS ================
     # ---- Expression ----
 
     def expression(self):
         self.and_test()
-        while self.match("lexeme", "and"):
+        while self.match("lexeme", "or"):
             self.consume("KEYWORD")
             self.and_test()
 
@@ -128,11 +136,16 @@ class Parser:
     # -- Expression End --
 
     def ins_block(self):
+        indentation = 0
         if not self.consume("NEWLINE"):
             self.print_error("Expected newline")
 
-        if not self.consume("INDENT"):
+        if not self.match("token", "INDENT"):
             self.print_error("Expected indentation")
+
+        # consume all indentation
+        while self.consume("INDENT"):
+            indentation += 1
 
         # instance part
         while self.match("lexeme", "instance") and self.consume("KEYWORD"):
@@ -157,22 +170,35 @@ class Parser:
                 self.print_error("Expected colon ':'")
             self.block()
 
-        if not self.consume("DEDENT"):
+        if not self.match("token", "DEDENT"):
             self.print_error("Expected dedent")
 
+        # consume all dedent tokens for the current block
+        while self.match("token", "DEDENT") and indentation > 0:
+            indentation -= 1
+            self.consume("DEDENT")
+
     def block(self):
+        indentation = 0
         if not self.consume("NEWLINE"):
             self.print_error("Expected newline")
 
-        if not self.consume("INDENT"):
+        if not self.match("token", "INDENT"):
             self.print_error("Expected indentation")
 
-        # run all statements in block
-        while not self.tokens.is_empty() and not self.match("token", "DEDENT"):
-            self.statement()
+        # consume all indentation
+        while self.consume("INDENT"):
+            indentation += 1
 
-        if not self.consume("DEDENT"):
+        # run all statements in block
+        self.run_statements("DEDENT")
+        if not self.match("token", "DEDENT"):
             self.print_error("Expected dedent")
+
+        # consume all dedent tokens for the current block
+        while self.match("token", "DEDENT") and indentation > 0:
+            indentation -= 1
+            self.consume("DEDENT")
 
     # ---- Simple Statement ----
 
@@ -234,6 +260,18 @@ class Parser:
         if not self.consume("RPAREN"):
             self.print_error("Expected ')' after expressions and arguments")
 
+    def call_statement(self):
+        self.consume("LPAREN")
+
+        # optional zero or more arguments
+        while not self.match("token", "RPAREN"):
+            self.expression()
+            if not self.consume("COMMA"):
+                break
+
+        if not self.consume("RPAREN"):
+            self.print_error("Expected closing parenthesis ')'")
+
     def simple_stmt(self):
         if self.match("lexeme", "print"):
             self.output_statement()
@@ -247,6 +285,9 @@ class Parser:
         # assignment statement
         elif self.match("lexeme", ["+=", "-=", "*=", "/="]):
             self.assign_statement()
+        # call statement
+        elif self.match("token", "LPAREN"):
+            self.call_statement()
         else:
             self.print_error("Invalid statement")
 
@@ -362,14 +403,15 @@ class Parser:
             self.simple_stmt()
             if not self.consume("NEWLINE"):
                 self.print_error("Expected newline at the end of the statement")
-
         # compound stmt
         elif self.match("token", "KEYWORD"):
             self.compound_stmt()
+        else:
+            self.print_error("Invalid statement")
 
     def rook_pl(self):
-        while not self.tokens.is_empty() and not self.consume("EOF"):
-            self.statement()
+        self.run_statements("EOF")
+        self.consume("EOF")
 
     def parse(self):
         self.rook_pl()

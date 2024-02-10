@@ -1,206 +1,222 @@
-+-------------------+---------------------+--------+
-|       TOKEN       |        LEXEME       | COLUMN |
-+-------------------+---------------------+--------+
-|      KEYWORD      |        define       |   6    |
-|     IDENTIFIER    |         main        |   11   |
-|       LPAREN      |          (          |   12   |
-|       RPAREN      |          )          |   13   |
-|       COLON       |          :          |   14   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-|     IDENTIFIER    |        array        |   9    |
-|       ASSIGN      |          =          |   11   |
-|      LBRACKET     |          [          |   13   |
-|       NUMBER      |          1          |   14   |
-|      KEYWORD      |          to         |   17   |
-|       NUMBER      |          5          |   19   |
-|      KEYWORD      |         step        |   24   |
-|       COLON       |          :          |   25   |
-|       NUMBER      |          5          |   27   |
-|      RBRACKET     |          ]          |   28   |
-|      NEWLINE      |                     |   0    |
-|     IDENTIFIER    |        arrays       |   10   |
-|       ASSIGN      |          =          |   12   |
-|      LBRACKET     |          [          |   14   |
-|      LBRACKET     |          [          |   15   |
-|       STRING      |      "string1"      |   24   |
-|       COMMA       |          ,          |   25   |
-|       STRING      |      "string2"      |   35   |
-|      RBRACKET     |          ]          |   36   |
-|       COMMA       |          ,          |   37   |
-|      LBRACKET     |          [          |   39   |
-|       STRING      |      "string3"      |   48   |
-|       COMMA       |          ,          |   49   |
-|       STRING      |      "string4"      |   59   |
-|      RBRACKET     |          ]          |   60   |
-|      RBRACKET     |          ]          |   61   |
-|      NEWLINE      |                     |   0    |
-|      KEYWORD      |         for         |   7    |
-|     IDENTIFIER    |        array        |   13   |
-|      KEYWORD      |          in         |   16   |
-|     IDENTIFIER    |        arrays       |   23   |
-|       COLON       |          :          |   24   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-|      KEYWORD      |         for         |   11   |
-|     IDENTIFIER    |        index        |   17   |
-|       COMMA       |          ,          |   18   |
-|     IDENTIFIER    |        value        |   24   |
-|       COMMA       |          ,          |   25   |
-|     IDENTIFIER    |         var3        |   30   |
-|      KEYWORD      |          in         |   33   |
-|     IDENTIFIER    |        array        |   39   |
-|       COLON       |          :          |   40   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   17   |
-|       LPAREN      |          (          |   18   |
-|     IDENTIFIER    |        index        |   23   |
-|       COMMA       |          ,          |   24   |
-|     IDENTIFIER    |        value        |   30   |
-|       RPAREN      |          )          |   31   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|      KEYWORD      |        while        |   9    |
-|       NUMBER      |          5          |   11   |
-|        PLUS       |          +          |   13   |
-|       NUMBER      |          5          |   15   |
-|        LESS       |          <          |   17   |
-|       NUMBER      |          6          |   19   |
-|      MULTIPLY     |          *          |   21   |
-|       LPAREN      |          (          |   23   |
-|       NUMBER      |          7          |   24   |
-|       MINUS       |          -          |   26   |
-|       NUMBER      |          7          |   28   |
-|       RPAREN      |          )          |   29   |
-|       COLON       |          :          |   30   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   13   |
-|       LPAREN      |          (          |   14   |
-|       STRING      | "inside while loop" |   33   |
-|       RPAREN      |          )          |   34   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|     IDENTIFIER    |         var         |   7    |
-|       ASSIGN      |          =          |   9    |
-|       NUMBER      |          5          |   11   |
-|      NEWLINE      |                     |   0    |
-|      KEYWORD      |        which        |   9    |
-|     IDENTIFIER    |         var         |   13   |
-|       COLON       |          :          |   14   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-|      KEYWORD      |       instance      |   16   |
-|        LESS       |          <          |   18   |
-|       NUMBER      |          5          |   20   |
-|       COLON       |          :          |   21   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   17   |
-|       LPAREN      |          (          |   18   |
-|       STRING      |    "less than 5"    |   31   |
-|       RPAREN      |          )          |   32   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|      KEYWORD      |       instance      |   16   |
-|       NUMBER      |          5          |   18   |
-|       COLON       |          :          |   19   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   17   |
-|       LPAREN      |          (          |   18   |
-|       RPAREN      |          )          |   19   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|      KEYWORD      |       instance      |   16   |
-|      GREATER      |          >          |   18   |
-|       NUMBER      |          5          |   20   |
-|       COLON       |          :          |   21   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   17   |
-|       LPAREN      |          (          |   18   |
-|       STRING      |   "greater than 5"  |   34   |
-|       RPAREN      |          )          |   35   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|      KEYWORD      |       default       |   15   |
-|       COLON       |          :          |   16   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   17   |
-|       LPAREN      |          (          |   18   |
-|       STRING      | "none of the above" |   37   |
-|       RPAREN      |          )          |   38   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|     IDENTIFIER    |         var         |   7    |
-|     PLUSASSIGN    |          +=         |   10   |
-|       NUMBER      |          5          |   12   |
-|      NEWLINE      |                     |   0    |
-|     IDENTIFIER    |         name        |   8    |
-|       ASSIGN      |          =          |   10   |
-| BUILT_IN_FUNCTION |        input        |   16   |
-|       LPAREN      |          (          |   17   |
-|       STRING      | "what's your name?" |   36   |
-|       RPAREN      |          )          |   37   |
-|      NEWLINE      |                     |   0    |
-|     IDENTIFIER    |         age         |   7    |
-|       ASSIGN      |          =          |   9    |
-| BUILT_IN_FUNCTION |        input        |   15   |
-|       LPAREN      |          (          |   16   |
-|       RPAREN      |          )          |   17   |
-|      NEWLINE      |                     |   0    |
-|     IDENTIFIER    |        string       |   10   |
-|       ASSIGN      |          =          |   12   |
-|       STRING      |   "just a string"   |   28   |
-|      NEWLINE      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   9    |
-|       LPAREN      |          (          |   10   |
-|     IDENTIFIER    |         var         |   13   |
-|       COMMA       |          ,          |   14   |
-|     IDENTIFIER    |         age         |   18   |
-|       RPAREN      |          )          |   19   |
-|      NEWLINE      |                     |   0    |
-|      KEYWORD      |          if         |   6    |
-|     IDENTIFIER    |         age         |   10   |
-|        LESS       |          <          |   12   |
-|       NUMBER      |          6          |   14   |
-|       COLON       |          :          |   15   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   13   |
-|       LPAREN      |          (          |   14   |
-|       STRING      |     "too young"     |   25   |
-|       RPAREN      |          )          |   26   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|      KEYWORD      |         elif        |   8    |
-|     IDENTIFIER    |         age         |   12   |
-|      GREATER      |          >          |   14   |
-|       NUMBER      |          6          |   16   |
-|       COLON       |          :          |   17   |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   13   |
-|       LPAREN      |          (          |   14   |
-|       STRING      |    "good to go!"    |   27   |
-|       RPAREN      |          )          |   28   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|      KEYWORD      |         else        |   8    |
-|       COLON       |          :          |   9    |
-|      NEWLINE      |                     |   0    |
-|       INDENT      |                     |   0    |
-| BUILT_IN_FUNCTION |        print        |   13   |
-|       LPAREN      |          (          |   14   |
-|       STRING      |      "alright"      |   23   |
-|       RPAREN      |          )          |   24   |
-|      NEWLINE      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|       DEDENT      |                     |   0    |
-|        EOF        |                     |   0    |
-+-------------------+---------------------+--------+
++-------------------+---------------------+----------+
+|       TOKEN       |        LEXEME       | COLUM_NO |
++-------------------+---------------------+----------+
+| BUILT_IN_FUNCTION |        print        |    5     |
+|       LPAREN      |          (          |    6     |
+|       STRING      |    "Hello world"    |    19    |
+|       RPAREN      |          )          |    20    |
+|      NEWLINE      |                     |    21    |
+|      KEYWORD      |        define       |    6     |
+|     IDENTIFIER    |         main        |    11    |
+|       LPAREN      |          (          |    12    |
+|       RPAREN      |          )          |    13    |
+|       COLON       |          :          |    14    |
+|      NEWLINE      |                     |    15    |
+|       INDENT      |                     |    4     |
+|     IDENTIFIER    |        array        |    9     |
+|       ASSIGN      |          =          |    11    |
+|      LBRACKET     |          [          |    13    |
+|       NUMBER      |          1          |    14    |
+|      KEYWORD      |          to         |    17    |
+|       NUMBER      |          5          |    19    |
+|      KEYWORD      |         step        |    24    |
+|       COLON       |          :          |    25    |
+|       NUMBER      |          5          |    27    |
+|      RBRACKET     |          ]          |    28    |
+|      NEWLINE      |                     |    29    |
+|     IDENTIFIER    |        arrays       |    10    |
+|       ASSIGN      |          =          |    12    |
+|      LBRACKET     |          [          |    14    |
+|      LBRACKET     |          [          |    15    |
+|       STRING      |      "string1"      |    24    |
+|       COMMA       |          ,          |    25    |
+|       STRING      |      "string2"      |    35    |
+|      RBRACKET     |          ]          |    36    |
+|       COMMA       |          ,          |    37    |
+|      LBRACKET     |          [          |    39    |
+|       STRING      |      "string3"      |    48    |
+|       COMMA       |          ,          |    49    |
+|       STRING      |      "string4"      |    59    |
+|      RBRACKET     |          ]          |    60    |
+|      RBRACKET     |          ]          |    61    |
+|      NEWLINE      |                     |    62    |
+|      KEYWORD      |         for         |    7     |
+|     IDENTIFIER    |        array        |    13    |
+|      KEYWORD      |          in         |    16    |
+|     IDENTIFIER    |        arrays       |    23    |
+|       COLON       |          :          |    24    |
+|      NEWLINE      |                     |    25    |
+|       INDENT      |                     |    8     |
+|      KEYWORD      |         for         |    11    |
+|     IDENTIFIER    |        index        |    17    |
+|       COMMA       |          ,          |    18    |
+|     IDENTIFIER    |        value        |    24    |
+|      KEYWORD      |          in         |    27    |
+|     IDENTIFIER    |        array        |    33    |
+|       COLON       |          :          |    34    |
+|      NEWLINE      |                     |    35    |
+|       INDENT      |                     |    12    |
+| BUILT_IN_FUNCTION |        print        |    17    |
+|       LPAREN      |          (          |    18    |
+|     IDENTIFIER    |        index        |    23    |
+|       COMMA       |          ,          |    24    |
+|     IDENTIFIER    |        value        |    30    |
+|       RPAREN      |          )          |    31    |
+|      NEWLINE      |                     |    32    |
+|       DEDENT      |                     |    4     |
+|       DEDENT      |                     |    4     |
+|      KEYWORD      |        while        |    9     |
+|       NUMBER      |          5          |    11    |
+|        PLUS       |          +          |    13    |
+|       NUMBER      |          5          |    15    |
+|        LESS       |          <          |    17    |
+|       NUMBER      |          6          |    19    |
+|      MULTIPLY     |          *          |    21    |
+|       LPAREN      |          (          |    23    |
+|       NUMBER      |          7          |    24    |
+|       MINUS       |          -          |    26    |
+|       NUMBER      |          7          |    28    |
+|       RPAREN      |          )          |    29    |
+|       COLON       |          :          |    30    |
+|      NEWLINE      |                     |    31    |
+|       INDENT      |                     |    8     |
+| BUILT_IN_FUNCTION |        print        |    13    |
+|       LPAREN      |          (          |    14    |
+|       STRING      | "inside while loop" |    33    |
+|       RPAREN      |          )          |    34    |
+|      NEWLINE      |                     |    35    |
+| BUILT_IN_FUNCTION |        print        |    13    |
+|       LPAREN      |          (          |    14    |
+|       STRING      | "inside while loop" |    33    |
+|       RPAREN      |          )          |    34    |
+|      NEWLINE      |                     |    35    |
+| BUILT_IN_FUNCTION |        print        |    13    |
+|       LPAREN      |          (          |    14    |
+|       STRING      | "inside while loop" |    33    |
+|       RPAREN      |          )          |    34    |
+|      NEWLINE      |                     |    35    |
+|       DEDENT      |                     |    4     |
+|     IDENTIFIER    |         var         |    7     |
+|       ASSIGN      |          =          |    9     |
+|       NUMBER      |          5          |    11    |
+|      NEWLINE      |                     |    12    |
+|      KEYWORD      |        which        |    9     |
+|     IDENTIFIER    |         var         |    13    |
+|       COLON       |          :          |    14    |
+|      NEWLINE      |                     |    15    |
+|       INDENT      |                     |    8     |
+|      KEYWORD      |       instance      |    16    |
+|        LESS       |          <          |    18    |
+|       NUMBER      |          5          |    20    |
+|       COLON       |          :          |    21    |
+|      NEWLINE      |                     |    22    |
+|       INDENT      |                     |    12    |
+| BUILT_IN_FUNCTION |        print        |    17    |
+|       LPAREN      |          (          |    18    |
+|       STRING      |    "less than 5"    |    31    |
+|       RPAREN      |          )          |    32    |
+|      NEWLINE      |                     |    33    |
+|       DEDENT      |                     |    8     |
+|      KEYWORD      |       instance      |    16    |
+|       NUMBER      |          5          |    18    |
+|       COLON       |          :          |    19    |
+|      NEWLINE      |                     |    20    |
+|       INDENT      |                     |    12    |
+| BUILT_IN_FUNCTION |        print        |    17    |
+|       LPAREN      |          (          |    18    |
+|       RPAREN      |          )          |    19    |
+|      NEWLINE      |                     |    20    |
+|       DEDENT      |                     |    8     |
+|      KEYWORD      |       instance      |    16    |
+|      GREATER      |          >          |    18    |
+|       NUMBER      |          5          |    20    |
+|       COLON       |          :          |    21    |
+|      NEWLINE      |                     |    22    |
+|       INDENT      |                     |    12    |
+| BUILT_IN_FUNCTION |        print        |    17    |
+|       ASSIGN      |          =          |    19    |
+|       STRING      |   "greater than 5"  |    36    |
+|       RPAREN      |          )          |    37    |
+|      NEWLINE      |                     |    38    |
+|       DEDENT      |                     |    8     |
+|      KEYWORD      |       default       |    15    |
+|       COLON       |          :          |    16    |
+|      NEWLINE      |                     |    17    |
+|       INDENT      |                     |    12    |
+| BUILT_IN_FUNCTION |        print        |    17    |
+|       LPAREN      |          (          |    18    |
+|       STRING      | "none of the above" |    37    |
+|       RPAREN      |          )          |    38    |
+|      NEWLINE      |                     |    39    |
+|       DEDENT      |                     |    4     |
+|       DEDENT      |                     |    4     |
+|     IDENTIFIER    |         var         |    7     |
+|     PLUSASSIGN    |          +=         |    10    |
+|       NUMBER      |          5          |    12    |
+|      NEWLINE      |                     |    13    |
+|     IDENTIFIER    |         name        |    8     |
+|       ASSIGN      |          =          |    10    |
+| BUILT_IN_FUNCTION |        input        |    16    |
+|       LPAREN      |          (          |    17    |
+|       STRING      | "what's your name?" |    36    |
+|       RPAREN      |          )          |    37    |
+|      NEWLINE      |                     |    38    |
+|     IDENTIFIER    |         age         |    7     |
+|       ASSIGN      |          =          |    9     |
+| BUILT_IN_FUNCTION |        input        |    15    |
+|       LPAREN      |          (          |    16    |
+|       RPAREN      |          )          |    17    |
+|      NEWLINE      |                     |    18    |
+|     IDENTIFIER    |        string       |    10    |
+|       ASSIGN      |          =          |    12    |
+|       STRING      |   "just a string"   |    28    |
+|      NEWLINE      |                     |    29    |
+| BUILT_IN_FUNCTION |        print        |    9     |
+|       LPAREN      |          (          |    10    |
+|     IDENTIFIER    |         var         |    13    |
+|       COMMA       |          ,          |    14    |
+|     IDENTIFIER    |         age         |    18    |
+|       RPAREN      |          )          |    19    |
+|      NEWLINE      |                     |    20    |
+|      KEYWORD      |          if         |    6     |
+|     IDENTIFIER    |         age         |    10    |
+|        LESS       |          <          |    12    |
+|       NUMBER      |          6          |    14    |
+|       COLON       |          :          |    15    |
+|      NEWLINE      |                     |    16    |
+|       INDENT      |                     |    8     |
+| BUILT_IN_FUNCTION |        print        |    13    |
+|       LPAREN      |          (          |    14    |
+|      NEWLINE      |                     |    15    |
+|       INDENT      |                     |    12    |
+|       STRING      |     "too young"     |    23    |
+|       RPAREN      |          )          |    24    |
+|      NEWLINE      |                     |    25    |
+|       DEDENT      |                     |    4     |
+|       DEDENT      |                     |    4     |
+|      KEYWORD      |         elif        |    8     |
+|     IDENTIFIER    |         age         |    12    |
+|      GREATER      |          >          |    14    |
+|       NUMBER      |          6          |    16    |
+|       COLON       |          :          |    17    |
+|      NEWLINE      |                     |    18    |
+|       INDENT      |                     |    8     |
+| BUILT_IN_FUNCTION |        print        |    13    |
+|       LPAREN      |          (          |    14    |
+|       STRING      |    "good to go!"    |    27    |
+|       RPAREN      |          )          |    28    |
+|      NEWLINE      |                     |    29    |
+|       DEDENT      |                     |    4     |
+|      KEYWORD      |         else        |    8     |
+|       COLON       |          :          |    9     |
+|      NEWLINE      |                     |    10    |
+|       INDENT      |                     |    8     |
+| BUILT_IN_FUNCTION |        print        |    13    |
+|       LPAREN      |          (          |    14    |
+|       STRING      |      "alright"      |    23    |
+|       RPAREN      |          )          |    24    |
+|      NEWLINE      |                     |    25    |
+|       DEDENT      |                     |    0     |
+|       DEDENT      |                     |    0     |
+|        EOF        |                     |    0     |
++-------------------+---------------------+----------+
